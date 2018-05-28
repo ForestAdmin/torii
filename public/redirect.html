@@ -7,6 +7,13 @@
       var CURRENT_REQUEST_KEY = '__torii_request';
       var pendingRequestKey = window.localStorage.getItem(CURRENT_REQUEST_KEY);
 
+      // NOTICE: On Safari, when localStorage is used on an iframe, sessionStorage is used
+      //         instead by default.
+      //         See: https://stackoverflow.com/questions/38267657/safari-uses-sessionstorage-instead-of-localstorage
+      if (pendingRequestKey === null) {
+        pendingRequestKey = window.sessionStorage.getItem(CURRENT_REQUEST_KEY);
+      }
+
       if (pendingRequestKey) {
         window.localStorage.removeItem(CURRENT_REQUEST_KEY);
         var url = window.location.toString();
